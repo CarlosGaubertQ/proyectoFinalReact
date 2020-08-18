@@ -11,6 +11,11 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import swal from 'sweetalert';
 import Typography from '@material-ui/core/Typography';
+import Icon from '@material-ui/core/Icon';
+import { IconButton } from '@material-ui/core';
+import { loadCSS } from 'fg-loadcss';
+
+
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -48,14 +53,42 @@ const useStyles = makeStyles((theme) => ({
   espaciado: {
     margin: theme.spacing(2)
   },
-
+  root: {
+    display: 'flex',
+  },
 }));
 
 export default function Libros() {
   const { register, handleSubmit, errors } = useForm();
   const [item, setItem] = useState([])
+  const [selectedAlumno, setSelectedAlumno] = useState(null)
+  const [nombreBoton, setNombreBoton] = useState('Registrar alumno')
+  const [idUpdate, setIdUpdate] = useState(null)
   const classes = useStyles();
   const columns = [
+    {
+      name: "Seleccionar",
+      options: {
+        headerNoWrap: true,
+        customBodyRender: (item, tablemeta, update) => {
+          return (
+            <IconButton
+              variant='outlined'
+
+              className="btnblock"
+              onClick={() => handleSeleccion(item)}
+              color={selectedAlumno === item._id ? "secondary" : ""}
+            >
+              <div className={classes.root}>
+                {selectedAlumno === item._id ? <Icon className="fa fa-check-circle" /> : <Icon className="far fa-circle" />}
+
+
+              </div>
+            </IconButton>
+          );
+        },
+      },
+    },
     {
       name: "Rut del Alumno",
       field: "rut",
@@ -71,64 +104,117 @@ export default function Libros() {
         filter: true,
         sort: true,
       }
-    }
+    },
+    {
+
+      options: {
+        headerNoWrap: true,
+        customBodyRender: (item, tablemeta, update) => {
+          return (
+            <IconButton aria-label="delete"
+              onClick={() => handleEliminar(item.rut)}>
+              <Icon className="far fa-trash-alt" />
+            </IconButton>
+          );
+        },
+      },
+    },
   ]
 
 
-  const onSubmit = (data,e) => {
+  const onSubmit = (data, e) => {
+    if (nombreBoton === 'Registrar alumno') {
+      if (data.nombre === '' || data.rut === '') {
+        swal({
+          title: "Datos vacios",
+          text: "Falta completar alguno de los datos",
+          icon: "warning",
+          button: "Continuar",
+        });
+      } else {
+        axios
+          .post('http://localhost:5000/api/alumnoSave', {
+            nombre: data.nombre,
+            rut: data.rut,
+          })
+          .then(
+            (Response) => {
 
-    if (data.nombre === '' || data.rut === '') {
-      swal({
-        title: "Datos vacios",
-        text: "Falta completar alguno de los datos",
-        icon: "warning",
-        button: "Continuar",
-      });
-    } else {
-      axios
-        .post('http://localhost:5000/api/alumnoSave', {
-          nombre: data.nombre,
-          rut: data.rut,
-        })
-        .then(
-          (Response) => {
-
-            if (Response.status === 200) {
+              if (Response.status === 200) {
+                swal({
+                  title: "Alumno registrado satisfactoriamente",
+                  text: "Registrado en la base de datos",
+                  icon: "success",
+                  button: "Continuar",
+                });
+                cargar()
+                e.target.reset()
+              }
+              console.log(Response)
+            }
+          )
+          .catch((error) => {
+            if (error.response.status === 401) {
               swal({
-                title: "Alumno registrado satisfactoriamente",
-                text: "Registrado en la base de datos",
-                icon: "success",
+                title: "Error al registrar",
+                text: "Este alumno ya se encuentra en la base de la datos",
+                icon: "error",
                 button: "Continuar",
               });
-              cargar()
-              e.target.reset()
+            } else {
+              swal({
+                title: "Error al registrar",
+                text: "Hubo un problema con la conexion a la base de datos",
+                icon: "error",
+                button: "Continuar",
+              });
             }
-            console.log(Response)
-          }
-        )
-        .catch((error) => {
-          if (error.response.status === 401) {
-            swal({
-              title: "Error al registrar",
-              text: "Este alumno ya se encuentra en la base de la datos",
-              icon: "error",
-              button: "Continuar",
-            });
-          } else {
-            swal({
-              title: "Error al registrar",
-              text: "Hubo un problema con la conexion a la base de datos",
-              icon: "error",
-              button: "Continuar",
-            });
-          }
-        })
-    }
+          })
+      }
+    } else {
+        /// MODIFICAR
 
+      axios
+      .put("http://localhost:5000/api/alumnoUpdate/" + idUpdate, {
+        nombre: document.getElementById('nombre').value,
+        
+      })
+      .then((response) => {
+        console.log(response)
+        swal({
+          title: "Alumno modificado satisfactoriamente",
+          text: "datos guardados",
+          icon: "success",
+          button: "Continuar",
+        });
+        cargar()
+      })
+      .catch((error) => {
+        console.log(error)
+        swal({
+          title: "Error",
+          text: "Error: No se pudo modificar",
+          icon: "error",
+          button: "Continuar",
+        });
+        cargar()
+      })
+    }
   }
 
   useEffect(() => {
     cargar();
+  }, []);
+
+
+  React.useEffect(() => {
+    const node = loadCSS(
+      'https://use.fontawesome.com/releases/v5.12.0/css/all.css',
+      document.querySelector('#font-awesome-css'),
+    );
+    return () => {
+      node.parentNode.removeChild(node);
+    };
   }, []);
 
   const cargar = async () => {
@@ -137,8 +223,7 @@ export default function Libros() {
     return null;
   }
 
-  const handleEliminar = (event) => {
-    let id = item[event.data[0].dataIndex].rut
+  const handleEliminar = (id) => {
     axios
       .delete("http://localhost:5000/api/alumnoEliminar/" + id)
       .then((response) => {
@@ -164,19 +249,37 @@ export default function Libros() {
 
   }
 
+
+  const handleSeleccion = (item) => {
+    if (selectedAlumno === item._id) {
+      setSelectedAlumno(null)
+      document.getElementById('rut').value = ""
+      document.getElementById('rut').disabled = false
+      document.getElementById('nombre').value = ""
+      setIdUpdate(null)
+      setNombreBoton('Registrar alumno')
+    } else {
+      setSelectedAlumno(item._id);
+      document.getElementById('rut').value = item.rut
+      document.getElementById('rut').disabled = true
+      document.getElementById('nombre').value = item.nombre
+      setIdUpdate(item._id)
+      setNombreBoton('Modificar alumno')
+    }
+  }
+
   console.log(errors);
   return (
     <Grid>
       <Card className={classes.paper}>
         <CardContent className={classes.nose}>
           <Typography component="h1" variant="h4" align="center">
-            Guardar Alumnos.
+            {nombreBoton}.
           </Typography>
           <form onSubmit={handleSubmit(onSubmit)} name="libros" noValidate>
             <Grid >
               <Grid className={classes.inputs}>
                 <TextField
-                  variant="outlined"
                   required
                   fullWidth
                   className={classes.espaciado}
@@ -185,11 +288,14 @@ export default function Libros() {
                   inputRef={register}
                   id="rut"
                   autoComplete="rut por defecto"
+                  margin="normal"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                 />
 
 
                 <TextField
-                  variant="outlined"
                   required
                   id="nombre"
                   className={classes.espaciado}
@@ -198,6 +304,10 @@ export default function Libros() {
                   name="nombre"
                   inputRef={register}
                   autoComplete="Nombre por defecto"
+                  margin="normal"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                 />
 
               </Grid>
@@ -206,7 +316,7 @@ export default function Libros() {
                 fullWidth
                 variant="contained"
                 color="primary"
-              >Registrar alumno</Button>
+              >{nombreBoton}</Button>
             </Grid>
 
           </form>
@@ -215,50 +325,49 @@ export default function Libros() {
 
 
       <Grid className={classes.datatable}>
-        {item.length === 0 ? <CircularProgress/> :
-        <MaterialDatatable
-          title={"Alumnos"}
-          data={item}
-          columns={columns}
-          options={{
-            selectableRows: true,
-            print: false,
-            onlyOneRowCanBeSelected: true,
+        {item.length === 0 ? <Grid className={classes.root}><CircularProgress /> </Grid> :
+          <MaterialDatatable
+            title={"Alumnos"}
+            data={item}
+            columns={columns}
+            options={{
+              selectableRows: false,
+              print: false,
 
-            textLabels: {
-              body: {
-                noMatch: "No se encontro ningun alumno registrado",
+              textLabels: {
+                body: {
+                  noMatch: "No se encontro ningun alumno registrado",
 
+                },
+                pagination: {
+                  next: "Siguiente",
+                  previous: "Página Anterior",
+                  rowsPerPage: "Filas por página:",
+                  displayRows: "de",
+
+                },
+                toolbar: {
+                  search: "Buscar por Rut o nombre del alumno",
+
+                },
+                selectedRows: {
+                  text: "Columna(s) seleccionada",
+                  delete: "Eliminar",
+                  deleteAria: "Delete Selected Rows",
+                },
               },
-              pagination: {
-                next: "Siguiente",
-                previous: "Página Anterior",
-                rowsPerPage: "Filas por página:",
-                displayRows: "de",
+              download: false,
+              pagination: true,
+              rowsPerPage: 5,
+              usePaperPlaceholder: true,
+              rowsPerPageOptions: [5, 10, 25],
+              sortColumnDirection: "desc",
+              filter: false,
+              responsive: 'stacked',
 
-              },
-              toolbar: {
-                search: "Buscar por Rut o nombre del alumno",
+            }}
 
-              },
-              selectedRows: {
-                text: "Columna(s) seleccionada",
-                delete: "Eliminar",
-                deleteAria: "Delete Selected Rows",
-              },
-            },
-            download: false,
-            pagination: true,
-            rowsPerPage: 5,
-            usePaperPlaceholder: true,
-            rowsPerPageOptions: [5, 10, 25],
-            sortColumnDirection: "desc",
-            filter: false,
-            responsive: 'stacked',
-            onRowsDelete: handleEliminar,
-          }}
-
-        />}
+          />}
       </Grid>
     </Grid>
   );

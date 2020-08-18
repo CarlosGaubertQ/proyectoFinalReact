@@ -75,16 +75,13 @@ function update(req, res) {
             if (!libro) {
                 res.status(400).send()
             } else {
-                if (req.body.nombreLibro) {
+                if (req.body.nombreLibro != '') {
                     libro.nombreLibro = req.body.nombreLibro
                 }
-                if (req.body.autor) {
+                if (req.body.autor != '') {
                     libro.autor = req.body.autor
                 }
-                if (req.body.anio) {
-                    libro.anio = req.body.anio
-                }
-                if (req.body.idioma) {
+                if (req.body.idioma != '') {
                     libro.idioma = req.body.idioma
                 }
                 libro.save((err, updateLibro) => {

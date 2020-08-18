@@ -39,17 +39,14 @@ function eliminar(req, res) {
 }
 
 function update(req, res) {
-    Alumnos.findById(req.params.rut, (err, alumno)=>{
+    Alumnos.findById(req.params.id, (err, alumno)=>{
         if(err){
             return res.status(500).send('Error base de datos')
         }else{
             if(!alumno){
                 res.status(400).send('No se encontro a este alumno')
             }else{
-                if(req.body.rut){
-                    alumno.rut = req.body.rut 
-                }
-                if(req.body.nombre){
+                if(req.body.nombre != ''){
                     alumno.nombre = req.body.nombre 
                 }
                 alumno.save((err,updateAlumno)=>{

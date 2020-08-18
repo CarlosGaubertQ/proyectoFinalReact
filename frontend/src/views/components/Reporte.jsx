@@ -90,7 +90,7 @@ export default function Reporte() {
                             color={selectedLibro === item._id ? "secondary" : ""}
                         >
                             <div className={classes.root}>
-                                {selectedLibro === item._id ? <Icon className="fa fa-check-circle" /> : <Icon className="fa fa-circle" />}
+                                {selectedLibro === item._id ? <Icon className="fa fa-check-circle" /> : <Icon className="far fa-circle" />}
 
 
                             </div>

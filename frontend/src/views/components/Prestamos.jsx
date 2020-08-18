@@ -118,7 +118,7 @@ export default function Checkout() {
               color={selectedLibro === item._id ? "secondary" : ""}
             >
               <div className={classes.root}>
-                {selectedLibro === item._id ? <Icon className="fa fa-check-circle" /> : <Icon className="fa fa-circle" />}
+                {selectedLibro === item._id ? <Icon className="fa fa-check-circle" /> : <Icon className="far fa-circle" />}
 
 
               </div>
@@ -176,7 +176,7 @@ export default function Checkout() {
             >
               <div className={classes.root}>
 
-                {selectedAlumno === item._id ? <Icon className="fa fa-check-circle" /> : <Icon className="fa fa-circle" />}
+                {selectedAlumno === item._id ? <Icon className="fa fa-check-circle" /> : <Icon className="far fa-circle" />}
 
               </div>
             </IconButton>
