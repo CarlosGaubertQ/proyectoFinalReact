@@ -19,7 +19,6 @@ import Icon from '@material-ui/core/Icon';
 import { IconButton } from '@material-ui/core';
 import { loadCSS } from 'fg-loadcss';
 
-
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
@@ -41,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(6),
   },
   paper: {
-    margin: theme.spacing(8, 4),
+    margin: theme.spacing(1, 1, 3 ),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -69,7 +68,6 @@ const useStyles = makeStyles((theme) => ({
   main: {
     align: "center"
   },
-
 }));
 
 export default function Libros() {
@@ -313,9 +311,9 @@ export default function Libros() {
 
   console.log(errors);
   return (
-    <Grid >
+    <Grid className={classes.fondo}>
       <Card className={classes.paper}>
-        <CardContent className={classes.nose}>
+        <CardContent >
           <Typography component="h1" variant="h4" align="center">
           {nombreBoton}.
           </Typography>

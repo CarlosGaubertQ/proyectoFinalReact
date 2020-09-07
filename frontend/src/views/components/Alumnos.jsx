@@ -173,7 +173,6 @@ export default function Libros() {
       }
     } else {
         /// MODIFICAR
-
       axios
       .put("http://localhost:5000/api/alumnoUpdate/" + idUpdate, {
         nombre: document.getElementById('nombre').value,

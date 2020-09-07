@@ -3,6 +3,7 @@ import NavBar from './components/NavBar'
 import axios from 'axios'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -12,6 +13,7 @@ const useStyles = makeStyles((theme) => ({
       transform: 'translate(-50%, -50%)',
       
     },
+  
 }));
 
 export default function Home() {
@@ -53,7 +55,9 @@ export default function Home() {
 
     if (autorizado) {
         return (
-            <NavBar />
+            <Grid className={classes.fondo}>
+                <NavBar />
+            </Grid>
         )
     } else {
         return (
