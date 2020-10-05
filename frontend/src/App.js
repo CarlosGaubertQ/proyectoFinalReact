@@ -17,7 +17,7 @@ function App() {
   function renderizadoCondicional() {
       
       axios
-          .post("http://localhost:5000/api/vigencia")
+          .post("/api/vigencia")
           .then(
               (response) =>{
                   console.log(response.data)

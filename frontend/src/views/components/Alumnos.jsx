@@ -133,7 +133,7 @@ export default function Libros() {
         });
       } else {
         axios
-          .post('http://localhost:5000/api/alumnoSave', {
+          .post('/api/alumnoSave', {
             nombre: data.nombre,
             rut: data.rut,
           })
@@ -174,7 +174,7 @@ export default function Libros() {
     } else {
         /// MODIFICAR
       axios
-      .put("http://localhost:5000/api/alumnoUpdate/" + idUpdate, {
+      .put("/api/alumnoUpdate/" + idUpdate, {
         nombre: document.getElementById('nombre').value,
         
       })
@@ -217,14 +217,14 @@ export default function Libros() {
   }, []);
 
   const cargar = async () => {
-    const { data } = await axios.get("http://localhost:5000/api/alumnos");
+    const { data } = await axios.get("/api/alumnos");
     setItem(data);
     return null;
   }
 
   const handleEliminar = (id) => {
     axios
-      .delete("http://localhost:5000/api/alumnoEliminar/" + id)
+      .delete("/api/alumnoEliminar/" + id)
       .then((response) => {
         console.log(response)
         swal({

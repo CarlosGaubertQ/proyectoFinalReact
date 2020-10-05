@@ -26,7 +26,7 @@ function Copyright() {
         <Typography variant="body2" color="textSecondary" align="center">
             {'Copyright © '}
             <Link color="inherit" href="https://material-ui.com/">
-                Your Website
+                Aplicacion de Kendo
       </Link>{' '}
             {new Date().getFullYear()}
             {'.'}
@@ -94,7 +94,7 @@ export default function SignInSide() {
             });
         }else{
             axios
-                .post("http://localhost:5000/api/validarUsuario", {
+                .post("/api/validarUsuario", {
                     email: data.email,
                     password: data.password
                 })

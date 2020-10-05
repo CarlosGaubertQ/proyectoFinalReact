@@ -24,9 +24,10 @@ app.use('/api', email_routes)
 app.use('/api', alumno_routes)
 app.use('/api', prestamo_routes)
 
+
 mongoose.connect('mongodb+srv://'+process.env.USERBD+':'+process.env.PASSBD+'@'+process.env.CLUSTER+'?retryWrites=true&w=majority',{useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true}, (err, res)=>{
-    app.listen(5000,()=>{
-        console.log("Funcionando en puerto 5000")
+    app.listen(8080,()=>{
+        console.log("Funcionando en puerto 8080")
     })
 })
 

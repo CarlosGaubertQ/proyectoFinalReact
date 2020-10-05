@@ -265,19 +265,19 @@ export default function Checkout() {
   }, []);
 
   const cargarLibros = async () => {
-    const { data } = await axios.get("http://localhost:5000/api/libros");
+    const { data } = await axios.get("/api/libros");
     setItemLibro(data);
     return null;
   }
 
   const cargarAlumnos = async () => {
-    const { data } = await axios.get("http://localhost:5000/api/alumnos");
+    const { data } = await axios.get("/api/alumnos");
     setItemAlumno(data);
     return null;
   }
 
   const cargarPrestamos = async () =>{
-    const { data } = await axios.get("http://localhost:5000/api/prestamos");
+    const { data } = await axios.get("/api/prestamos");
     setItemPrestamo(data);
     return null;
   }
@@ -350,7 +350,7 @@ export default function Checkout() {
       .then((willAdd) => {
         if (willAdd) {
           axios
-            .post("http://localhost:5000/api/prestamoSave", {
+            .post("/api/prestamoSave", {
               "fechaInicio": dateInicio,
               "fechaEntrega": dateEntrega,
               "libro": codigo,
@@ -411,7 +411,7 @@ export default function Checkout() {
     
     
     axios
-    .delete("http://localhost:5000/api/eliminarPrestamo/" + id)
+    .delete("/api/eliminarPrestamo/" + id)
     .then((response) =>{
        console.log(response)
        swal({

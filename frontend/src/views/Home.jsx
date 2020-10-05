@@ -28,7 +28,7 @@ export default function Home() {
     function renderizadoCondicional() {
         
         axios
-            .post("http://localhost:5000/api/vigencia")
+            .post("/api/vigencia")
             .then(
                 (response) => {
                     if (response.status === 200) {
@@ -61,6 +61,7 @@ export default function Home() {
         )
     } else {
         return (
+            
         <div className={classes.root}>
         <CircularProgress alignContent='center' size='13rem'  />
         </div>

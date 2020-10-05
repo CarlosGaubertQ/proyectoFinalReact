@@ -151,7 +151,7 @@ export default function Reporte() {
 
 
     const cargarLibros = async () => {
-        const { data } = await axios.get("http://localhost:5000/api/libros");
+        const { data } = await axios.get("/api/libros");
         setItemLibro(data);
 
         return null;
@@ -166,7 +166,7 @@ export default function Reporte() {
 
             let id = item._id
             axios
-                .post("http://localhost:5000/api/cantidadPrestamos", { id: id })
+                .post("/api/cantidadPrestamos", { id: id })
                 .then((Response) => {
                     if (Response.status === 200) {
                         console.log(Response.data.prestamos)

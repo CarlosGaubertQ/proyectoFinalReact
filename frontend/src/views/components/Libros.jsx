@@ -193,7 +193,7 @@ export default function Libros() {
         });
       } else {
         axios
-          .post('http://localhost:5000/api/librosave', {
+          .post('/api/librosave', {
             nombreLibro: data.nombreLibro,
             autor: data.autor,
             idioma: idioma
@@ -237,7 +237,7 @@ export default function Libros() {
       /// MODIFICAR
 
       axios
-      .put("http://localhost:5000/api/libroUpdate/" + idUpdate, {
+      .put("/api/libroUpdate/" + idUpdate, {
         nombreLibro: document.getElementById('nombreLibro').value,
         autor: document.getElementById('autor').value,
         idioma: idioma,
@@ -270,7 +270,7 @@ export default function Libros() {
   }, []);
 
   const cargar = async () => {
-    const { data } = await axios.get("http://localhost:5000/api/libros");
+    const { data } = await axios.get("/api/libros");
     setItem(data);
     return null;
   }
@@ -286,7 +286,7 @@ export default function Libros() {
     
 
     axios
-      .delete("http://localhost:5000/api/librodelete/" + event)
+      .delete("/api/librodelete/" + event)
       .then((response) => {
         console.log(response)
         swal({
@@ -335,7 +335,7 @@ export default function Libros() {
                   }}
                 />
 
-
+                
                 <TextField
 
                   required

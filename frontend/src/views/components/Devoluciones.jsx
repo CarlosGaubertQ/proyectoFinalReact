@@ -87,7 +87,7 @@ export default function Devoluciones(){
 
 
     const cargarPrestamosDevo = async () =>{
-        const { data } = await axios.get("http://localhost:5000/api/prestamosDevo");
+        const { data } = await axios.get("/api/prestamosDevo");
         setDevolucion(data);
         return null;
     }
@@ -105,7 +105,7 @@ export default function Devoluciones(){
             .then((willAdd) => {
               if (willAdd) {
                 axios
-                  .put("http://localhost:5000/api/updatePrestamo/" + item._id, {
+                  .put("/api/updatePrestamo/" + item._id, {
                     "fechaEntregaReal": new Date(),
                   })
                   .then(

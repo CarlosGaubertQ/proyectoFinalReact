@@ -52,7 +52,7 @@ export default function SignUp() {
       if (data.passwordSign === data.confirmPassword) {
 
         axios
-          .post('http://localhost:5000/api/guardarUsuario', {
+          .post('/api/guardarUsuario', {
             firstName: data.firstName,
             lasttName: data.lastName,
             email: data.emailSign,
@@ -98,7 +98,7 @@ export default function SignUp() {
 
   function enviarCorreo(email,name,) {
       axios
-      .post('http://localhost:5000/api/emailEnviar',{
+      .post('/api/emailEnviar',{
         "emailEnviar": email,
         "name": name,
         "asunto": "Resgistro Kendo App",
